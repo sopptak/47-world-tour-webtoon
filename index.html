@@ -1,44 +1,19 @@
-```html
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>47세, 세계일주</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#f5f0e7;color:#292a22;font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.7}
-header{padding:20px 7%;border-bottom:1px solid #ddd4c5;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:21px;font-weight:bold}
-nav a{margin-left:18px;color:#666;text-decoration:none;font-size:13px}
-.hero{padding:80px 10%;display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
-.eyebrow{color:#b85d3c;letter-spacing:2px;font-size:11px;font-weight:bold}
-h1{font-size:clamp(42px,6vw,72px);line-height:1.2;letter-spacing:-3px}
-h2{line-height:1.5}
-p{color:#737367;font-size:14px}
-.cta{display:inline-block;background:#292a22;color:white;padding:12px 18px;text-decoration:none;margin-top:15px}
-.art{height:330px;background:#e9dfcf;border-radius:48% 48% 3px 3px;position:relative;overflow:hidden}
-.sun{position:absolute;right:50px;top:40px;width:110px;height:110px;background:#c77a55;border-radius:50%}
-.hill{position:absolute;width:120%;height:180px;border-radius:50% 50% 0 0;bottom:-70px;left:-10%;background:#a5a88e;transform:rotate(-10deg)}
-.hill2{position:absolute;width:120%;height:140px;border-radius:50% 50% 0 0;bottom:-80px;right:-30%;background:#68745d}
-.stamp{position:absolute;top:25px;left:22px;border:1px solid;padding:8px;transform:rotate(-7deg)}
-.features{background:#eee7db;padding:35px 10%;display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
-.features strong{display:block}
-section.list{padding:65px 10%}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.card{padding:17px;background:#fbf8f1;border:1px solid #ded7c9}
-.num{color:#b85d3c;font-size:11px}
-.card strong{display:block;font-size:14px;margin-top:8px}
-footer{text-align:center;padding:25px;border-top:1px solid #ddd4c5;font-size:11px;color:#777}
-@media(max-width:650px){.hero{grid-template-columns:1fr;padding:45px 22px}.art{height:250px}.features{grid-template-columns:1fr;padding:28px 24px}.cards{grid-template-columns:repeat(2,1fr)}section.list{padding:45px 20px}h1{font-size:48px}nav a{margin-left:8px}}
-</style>
+<meta name="description" content="47세에 세계일주를 꿈꾸기 시작한 한 사람의 인생 후반전 준비기 웹툰. 전체 200화.">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<header><div class="logo">47세, 세계일주</div><nav><a href="#episodes">회차 목록</a><a href="#about">작품 소개</a></nav></header>
+<a class="skip" href="#episodes">회차 목록으로 건너뛰기</a>
+<header class="site"><a class="logo" href="./">47세, 세계일주</a><nav><a href="#episodes">회차 목록</a><a href="#about">작품 소개</a></nav></header>
 <main>
 <section class="hero">
 <div><div class="eyebrow">A SECOND HALF BEGINS</div><h1>47세,<br>세계일주를 꿈꾸다.</h1><h2>늦었다고 생각한 순간,<br>인생의 후반전이 시작됐다.</h2><p>빚과 생활비, 가족과 건강, 그리고 오래 미뤄둔 꿈.<br>59세의 출발을 향해 오늘부터 하나씩 준비한다.</p><a class="cta" href="#episodes">이야기 시작하기 ↓</a></div>
-<div class="art"><div class="sun"></div><div class="stamp">2038<br>ON THE ROAD</div><div class="hill"></div><div class="hill2"></div></div>
+<div class="art" aria-hidden="true"><div class="sun"></div><div class="stamp">2038<br>ON THE ROAD</div><div class="hill"></div><div class="hill2"></div></div>
 </section>
 <section class="features" id="about">
 <div><strong>01 / 꿈</strong><p>막연한 소망을 실행 가능한 계획으로.</p></div>
@@ -46,16 +21,29 @@ footer{text-align:center;padding:25px;border-top:1px solid #ddd4c5;font-size:11p
 <div><strong>03 / 가족</strong><p>함께 걸어온 시간도 여행의 일부다.</p></div>
 </section>
 <section class="list" id="episodes">
-<div class="eyebrow">THE JOURNEY</div><h2>첫 번째 이야기</h2>
-<div class="cards">
-<div class="card"><span class="num">EP.001</span><strong>47세, 세계일주를 꿈꾸다</strong><p>첫 화 원고 준비 중</p></div>
-<div class="card"><span class="num">EP.002</span><strong>세계일주에는 돈이 얼마나 들까</strong><p>회차 기획</p></div>
-<div class="card"><span class="num">EP.003</span><strong>그런데 내 통장에는…</strong><p>회차 기획</p></div>
+<div class="list-head">
+<div><div class="eyebrow">THE JOURNEY</div><h2>전체 200화</h2></div>
+<p id="publish-summary" style="margin:0"></p>
 </div>
-<p>전체 200화의 이야기를 순차적으로 준비하고 있습니다. 실제 원고가 완성된 회차부터 공개합니다.</p>
+<p class="notice">원고가 완성된 회차부터 순서대로 공개합니다. ‘준비 중’ 회차의 제목은 가제이며 바뀔 수 있습니다.</p>
+
+<div class="controls">
+<form class="search" id="search-form" role="search">
+<label for="q" class="skip">회차 번호 또는 제목 검색</label>
+<input id="q" type="search" placeholder="회차 번호(예: 12) 또는 제목 검색" autocomplete="off" enterkeyhint="search">
+<button type="button" id="reset">초기화</button>
+</form>
+<div class="chips" id="arc-chips" role="group" aria-label="이야기 구간 필터"></div>
+<p class="result-count" id="result-count" aria-live="polite"></p>
+</div>
+
+<div id="episode-list"></div>
+<noscript><p>회차 목록을 보려면 자바스크립트를 켜 주세요.</p></noscript>
 </section>
 </main>
 <footer>© 47세, 세계일주 · 인생 후반전 준비기</footer>
+<script src="data/episodes.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/list.js"></script>
 </body>
 </html>
-```
