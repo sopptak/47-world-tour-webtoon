@@ -233,9 +233,10 @@
     "47세의 나에게"
   ];
 
-  // 완성된 원고만 여기에 등록합니다. 현재 공개된 원고는 없습니다.
+  // 완성된 원고만 여기에 등록합니다.
   // 형식) 회차번호: { date: "YYYY-MM-DD", images: ["01.jpg", "02.jpg"] }
   var MANUSCRIPTS = {
+    1: { images: ["episode-001.webp"] },
   };
 
   var data = { arcs: ARCS, titles: TITLES, manuscripts: MANUSCRIPTS };
