@@ -34,6 +34,14 @@ test("기존 사이트의 1~3화 제목을 유지한다", () => {
   assert.equal(episodes[2].title, "그런데 내 통장에는…");
 });
 
+test("EP.002 정본 원고를 20컷으로 공개한다", () => {
+  const ep = episodes[1];
+  assert.equal(ep.title, "세계일주에는 돈이 얼마나 들까");
+  assert.equal(ep.published, true);
+  assert.equal(ep.images.length, 20);
+  assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.jpg`));
+});
+
 test("원고가 등록되지 않은 회차는 공개로 표시되지 않는다", () => {
   for (const ep of episodes) {
     const ms = data.manuscripts[ep.no];
