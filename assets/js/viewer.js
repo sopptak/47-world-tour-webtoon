@@ -46,8 +46,15 @@
   if (ep.published) {
     var viewer = el("div", { "class": "viewer" });
     ep.images.forEach(function (src, i) {
-      var img = el("img", { src: src, alt: ep.code + " " + ep.title + " " + (i + 1) + "번째 컷", decoding: "async" });
+      var img = el("img", { src: src, alt: ep.code + " " + ep.title + " " + (i + 1) + "번째 컷", decoding: "async", tabindex: "0", role: "button", "aria-label": "확대해서 보기: " + ep.code + " " + ep.title });
       if (i > 1) img.loading = "lazy";
+      img.addEventListener("click", function () { openImage(src, img.alt); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openImage(src, img.alt);
+        }
+      });
       viewer.appendChild(img);
     });
     body.appendChild(viewer);
@@ -66,6 +73,19 @@
   nav.appendChild(navLink(n.prev, "이전 화", "prev"));
   nav.appendChild(el("a", { "class": "to-list", href: listHref }, "전체 목록"));
   nav.appendChild(navLink(n.next, "다음 화", "next"));
+
+  function openImage(src, alt) {
+    var overlay = el("div", { "class": "image-zoom", role: "dialog", "aria-modal": "true", "aria-label": "원고 확대 보기" });
+    var close = el("button", { type: "button", "class": "image-zoom-close", "aria-label": "확대 보기 닫기" }, "닫기 ×");
+    var zoomed = el("img", { src: src, alt: alt });
+    close.addEventListener("click", function () { overlay.remove(); });
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", function (e) { if (e.key === "Escape") overlay.remove(); });
+    overlay.appendChild(close);
+    overlay.appendChild(zoomed);
+    document.body.appendChild(overlay);
+    close.focus();
+  }
 
   // 키보드 ← → 로 회차 이동
   document.addEventListener("keydown", function (e) {
