@@ -184,3 +184,25 @@ test("읽기 화면은 원고를 화면 너비에 맞추고 원본 비율을 유
   const html = fs.readFileSync(path.join(ROOT, "episode.html"), "utf8");
   assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/);
 });
+
+test("3~7화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
+  for (let no = 3; no <= 7; no++) {
+    const file = path.join(ROOT, `scripts/episodes/${core.pad3(no)}.md`);
+    assert.ok(fs.existsSync(file), `없는 대본: ${file}`);
+    const md = fs.readFileSync(file, "utf8");
+    const ep = episodes[no - 1];
+    assert.equal(md.split("\n")[0], `# ${ep.code} ${ep.title}`, `${ep.code} 제목 불일치`);
+    const cuts = md.split(/^### 컷 /m).slice(1);
+    assert.ok(cuts.length >= 12 && cuts.length <= 16, `${ep.code} 컷 수 ${cuts.length}`);
+    cuts.forEach((cut, i) => {
+      assert.ok(cut.startsWith(String(i + 1)), `${ep.code} 컷 번호 순서 (${i + 1})`);
+      for (const field of ["장면", "인물", "배경", "대사/내레이션", "연출"]) {
+        assert.match(cut, new RegExp(`\\*\\*${field}\\*\\*: \\S`), `${ep.code} 컷 ${i + 1}: ${field} 누락`);
+      }
+    });
+    // 마지막 컷은 다음 화 예고 띠로 끝난다
+    const next = episodes[no];
+    assert.ok(cuts[cuts.length - 1].includes(`「EP.${String(next.no).padStart(2, "0")} ${next.title}」`), `${ep.code} 다음 화 예고 띠`);
+    assert.equal(ep.published, false, `${ep.code}는 대본 검토 전이므로 공개하면 안 됨`);
+  }
+});
