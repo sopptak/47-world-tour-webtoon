@@ -145,7 +145,7 @@
 | 인물 설정 | 근거가 있는 것만 확정. 나머지는 [미정]으로 두고 대본에서 '제안'으로 표시 | [확정·기준안] |
 | 공개 | 대본 검토 → 이미지 제작 → 컷 검수 → `MANUSCRIPTS` 등록 순서. 검토 전에는 공개로 표시하지 않음 | 작업 지시 |
 
-시각 기준은 [`visual-style-guide.md`](visual-style-guide.md)를 따릅니다.
+시각 기준은 [`visual-style-guide.md`](visual-style-guide.md), 인물별 외형·표정·말투는 [`character-bible.md`](character-bible.md)를 따릅니다.
 
 ## 8. 변경 이력
 - 2026-10-20 v1: 기준안 작성 (현재 2026년, 출발 2038-03-02, 3화부터 컬러, 회상은 세피아).
