@@ -238,6 +238,7 @@
   var MANUSCRIPTS = {
     1: { images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
     2: { date: "2026-10-17", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
+    3: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
   };
 
   var data = { arcs: ARCS, titles: TITLES, manuscripts: MANUSCRIPTS };

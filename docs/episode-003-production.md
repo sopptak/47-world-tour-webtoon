@@ -1,5 +1,7 @@
 # EP.003 그런데 내 통장에는… — 컷별 제작표
 
+> **보관용 초안:** 아래 14컷 제작표·식자 레이어는 공개본보다 앞서 작성된 제작 계획입니다. 작가 지시에 따라 20컷으로 재구성해 공개했으며, 최종 원고는 [`scripts/episodes/003.md`](../scripts/episodes/003.md), `manuscripts/003.md`, `episodes/003/01.jpg`~`20.jpg`입니다. 이 문서의 14컷 자산은 과거 작업 자료로 보존합니다.
+
 > 작성: 2026-10-20 · 상태: **제작 중 — 화면 컷 2장 완성, 인물 그림 0장**
 > 기준: [`scripts/episodes/003.md`](../scripts/episodes/003.md) (14컷) · [`visual-style-guide.md`](visual-style-guide.md) · [`character-bible.md`](character-bible.md)
 > 프롬프트: [`scripts/image-prompts/003.md`](../scripts/image-prompts/003.md)

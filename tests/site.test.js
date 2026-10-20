@@ -42,6 +42,18 @@ test("EP.002 정본 원고를 20컷으로 공개한다", () => {
   assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.jpg`));
 });
 
+test("EP.003을 20컷 세로 배열과 한국어 대사로 공개한다", () => {
+  const ep = episodes[2];
+  assert.equal(ep.title, "그런데 내 통장에는…");
+  assert.equal(ep.published, true);
+  assert.equal(ep.images.length, 20);
+  assert.ok(ep.images.every((src, i) => src === `episodes/003/${String(i + 1).padStart(2, "0")}.jpg`));
+  const viewer = fs.readFileSync(path.join(ROOT, "assets/js/viewer.js"), "utf8");
+  assert.match(viewer, /고3 아들은 입시 준비/);
+  assert.match(viewer, /중1 딸/);
+  assert.match(viewer, /판매액이 그대로 수입은 아니야/);
+});
+
 test("EP.001을 기존 그림의 20컷 세로 배열로 공개한다", () => {
   const ep = episodes[0];
   assert.equal(ep.published, true);
@@ -185,11 +197,27 @@ test("읽기 화면은 원고를 화면 너비에 맞추고 원본 비율을 유
   assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/);
 });
 
-test("3~12화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
-  for (let no = 3; no <= 12; no++) {
+test("EP.003 최종 대본은 20컷이고 다음 화로 연결한다", () => {
+  const file = path.join(ROOT, "scripts/episodes/003.md");
+  const md = fs.readFileSync(file, "utf8").replace(/\r/g, "");
+  assert.equal(md.split("\n")[0], `# ${episodes[2].code} ${episodes[2].title}`);
+  const cuts = md.split(/^### 컷 /m).slice(1);
+  assert.equal(cuts.length, 20);
+  cuts.forEach((cut, i) => {
+    assert.ok(cut.startsWith(String(i + 1)), `EP.003 컷 번호 순서 (${i + 1})`);
+    for (const field of ["장면", "인물", "배경", "대사/내레이션", "연출"]) {
+      assert.match(cut, new RegExp(`\\*\\*${field}\\*\\*: \\S`), `EP.003 컷 ${i + 1}: ${field} 누락`);
+    }
+  });
+  assert.ok(cuts[19].includes(`「EP.04 ${episodes[3].title}」`), "EP.003 다음 화 예고");
+  assert.equal(episodes[2].published, true);
+});
+
+test("4~12화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
+  for (let no = 4; no <= 12; no++) {
     const file = path.join(ROOT, `scripts/episodes/${core.pad3(no)}.md`);
     assert.ok(fs.existsSync(file), `없는 대본: ${file}`);
-    const md = fs.readFileSync(file, "utf8");
+    const md = fs.readFileSync(file, "utf8").replace(/\r/g, "");
     const ep = episodes[no - 1];
     assert.equal(md.split("\n")[0], `# ${ep.code} ${ep.title}`, `${ep.code} 제목 불일치`);
     const cuts = md.split(/^### 컷 /m).slice(1);
