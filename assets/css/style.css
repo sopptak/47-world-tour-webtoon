@@ -77,7 +77,9 @@ footer{text-align:center;padding:25px var(--pad-x);border-top:1px solid var(--li
 .viewer img[role="button"]{cursor:zoom-in}
 .viewer .panel{position:relative;margin:0;line-height:0}
 .viewer .panel-caption{position:absolute;left:4%;bottom:3%;z-index:1;max-width:84%;padding:10px 16px;border:2px solid #34332f;border-radius:20px;background:rgba(255,255,255,.96);box-shadow:0 2px 8px rgba(0,0,0,.18);color:#25241f;font-size:clamp(16px,2.4vw,21px);font-weight:700;line-height:1.5;letter-spacing:-.03em;white-space:pre-line}
+.viewer .panel-caption:after{content:"";position:absolute;left:22px;bottom:-8px;width:12px;height:12px;background:#fff;border-right:2px solid #34332f;border-bottom:2px solid #34332f;transform:rotate(45deg)}
 .viewer .panel-caption.is-top{top:3%;bottom:auto}
+.viewer .panel-caption.is-top:after{top:-8px;bottom:auto;border:0;border-left:2px solid #34332f;border-top:2px solid #34332f}
 .image-zoom{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:56px 12px 16px;background:rgba(20,20,18,.96);overscroll-behavior:contain}
 .image-zoom img{display:block;width:auto;height:auto;max-width:none;max-height:none;margin:0 auto}
 .image-zoom-close{position:fixed;top:10px;right:12px;z-index:1;min-height:44px;padding:8px 14px;border:1px solid #aaa;background:#292a22;color:#fff;font:inherit;cursor:pointer}

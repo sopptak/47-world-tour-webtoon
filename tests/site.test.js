@@ -213,8 +213,24 @@ test("EP.003 최종 대본은 20컷이고 다음 화로 연결한다", () => {
   assert.equal(episodes[2].published, true);
 });
 
-test("4~12화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
-  for (let no = 4; no <= 12; no++) {
+test("EP.004 최종 대본은 20컷이고 다음 화로 연결한다", () => {
+  const file = path.join(ROOT, "scripts/episodes/004.md");
+  const md = fs.readFileSync(file, "utf8").replace(/\r/g, "");
+  assert.equal(md.split("\n")[0], `# ${episodes[3].code} ${episodes[3].title}`);
+  const cuts = md.split(/^### 컷 /m).slice(1);
+  assert.equal(cuts.length, 20);
+  cuts.forEach((cut, i) => {
+    assert.ok(cut.startsWith(String(i + 1)), `EP.004 컷 번호 순서 (${i + 1})`);
+    for (const field of ["장면", "인물", "배경", "대사/내레이션", "연출"]) {
+      assert.match(cut, new RegExp(`\\*\\*${field}\\*\\*: \\S`), `EP.004 컷 ${i + 1}: ${field} 누락`);
+    }
+  });
+  assert.ok(cuts[19].includes(`「EP.05 ${episodes[4].title}」`), "EP.004 다음 화 예고");
+  assert.equal(episodes[3].published, true);
+});
+
+test("5~12화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
+  for (let no = 5; no <= 12; no++) {
     const file = path.join(ROOT, `scripts/episodes/${core.pad3(no)}.md`);
     assert.ok(fs.existsSync(file), `없는 대본: ${file}`);
     const md = fs.readFileSync(file, "utf8").replace(/\r/g, "");
