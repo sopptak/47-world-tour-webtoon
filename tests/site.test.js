@@ -185,8 +185,8 @@ test("읽기 화면은 원고를 화면 너비에 맞추고 원본 비율을 유
   assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/);
 });
 
-test("3~7화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
-  for (let no = 3; no <= 7; no++) {
+test("3~8화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
+  for (let no = 3; no <= 8; no++) {
     const file = path.join(ROOT, `scripts/episodes/${core.pad3(no)}.md`);
     assert.ok(fs.existsSync(file), `없는 대본: ${file}`);
     const md = fs.readFileSync(file, "utf8");
