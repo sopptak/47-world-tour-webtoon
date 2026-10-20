@@ -39,7 +39,7 @@ test("EP.002 정본 원고를 20컷으로 공개한다", () => {
   assert.equal(ep.title, "세계일주에는 돈이 얼마나 들까");
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.jpg`));
+  assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.svg`));
 });
 
 test("EP.003을 20컷 세로 배열과 한국어 대사로 공개한다", () => {
@@ -47,18 +47,39 @@ test("EP.003을 20컷 세로 배열과 한국어 대사로 공개한다", () => 
   assert.equal(ep.title, "그런데 내 통장에는…");
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/003/${String(i + 1).padStart(2, "0")}.jpg`));
-  const viewer = fs.readFileSync(path.join(ROOT, "assets/js/viewer.js"), "utf8");
-  assert.match(viewer, /고3 아들은 입시 준비/);
-  assert.match(viewer, /중1 딸/);
-  assert.match(viewer, /판매액이 그대로 수입은 아니야/);
+  assert.ok(ep.images.every((src, i) => src === `episodes/003/${String(i + 1).padStart(2, "0")}.svg`));
+  const dialogue = fs.readFileSync(path.join(ROOT, "data/dialogues.js"), "utf8");
+  assert.match(dialogue, /고3 아들은 입시 일정이 있고/);
+  assert.match(dialogue, /중1 딸도 자기 생활이 있지/);
+  assert.match(dialogue, /그래도 순수익은 아니네/);
 });
 
 test("EP.001을 기존 그림의 20컷 세로 배열로 공개한다", () => {
   const ep = episodes[0];
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/001/${String(i + 1).padStart(2, "0")}.jpg`));
+  assert.ok(ep.images.every((src, i) => src === `episodes/001/${String(i + 1).padStart(2, "0")}.svg`));
+});
+
+test("EP.001~004는 같은 캐릭터 디자인의 20컷 SVG와 한국어 말풍선을 사용한다", () => {
+  const dialogues = require("../data/dialogues.js");
+  for (let no = 1; no <= 4; no++) {
+    const ep = episodes[no - 1];
+    assert.equal(ep.images.length, 20, ep.code);
+    assert.ok(ep.images.every((src, i) => src === `episodes/${String(no).padStart(3, "0")}/${String(i + 1).padStart(2, "0")}.svg`));
+    assert.equal(dialogues[no].length, 20, `${ep.code} 말풍선 수`);
+    assert.ok(dialogues[no].every((line) => line.trim()), `${ep.code} 빈 대사`);
+    for (const src of ep.images) {
+      const svg = fs.readFileSync(path.join(ROOT, src), "utf8");
+      assert.match(svg, /viewBox="0 0 720 900"/);
+      assert.match(svg, /ellipse cx="350" cy="390" rx="112" ry="130"/);
+      assert.match(svg, /#181817/);
+      assert.doesNotMatch(svg, /컷\s*\d|panel\s*\d/i, `${src}: 그림에 컷 번호가 노출됨`);
+    }
+  }
+  const page = fs.readFileSync(path.join(ROOT, "episode.html"), "utf8");
+  assert.match(page, /data\/dialogues\.js/);
+  assert.match(fs.readFileSync(path.join(ROOT, "assets/js/viewer.js"), "utf8"), /panel-caption is-top/);
 });
 
 test("원고가 등록되지 않은 회차는 공개로 표시되지 않는다", () => {
@@ -135,6 +156,11 @@ test("HTML이 참조하는 로컬 파일이 모두 존재하고 외부 스크립
 // JPEG(SOFn)·WebP(VP8/VP8L/VP8X) 헤더에서 가로·세로 크기를 읽는다 (외부 라이브러리 없이)
 function imageSize(file) {
   const b = fs.readFileSync(file);
+  if (b.toString("utf8", 0, 256).includes("<svg")) {
+    const svg = b.toString("utf8");
+    const viewBox = svg.match(/viewBox="0 0 (\d+) (\d+)"/);
+    return viewBox ? { type: "svg", width: Number(viewBox[1]), height: Number(viewBox[2]) } : null;
+  }
   if (b[0] === 0xff && b[1] === 0xd8) {
     let i = 2;
     while (i < b.length) {
@@ -170,15 +196,6 @@ test("등록된 원고 이미지는 실제 이미지이며 모바일에서 선�
       // 컷 단위로 나눈 이미지인지 확인 (지나치게 긴 통짜 이미지 방지)
       assert.ok(size.height / size.width <= 2, `${src}: 세로로 너무 긴 이미지 ${size.width}x${size.height}`);
     }
-  }
-});
-
-test("EP.002 13·14·19·20번 컷에서 옆 컷 조각을 잘라냈다", () => {
-  // 원래 720px 폭 이미지의 가장자리에 이웃 컷 일부가 섞여 있었음 (거터 위치에서 잘라냄)
-  const expected = { 13: [662, 600], 14: [655, 663], 19: [661, 920], 20: [714, 924] };
-  for (const [no, [w, h]] of Object.entries(expected)) {
-    const size = imageSize(path.join(ROOT, `episodes/002/${no}.jpg`));
-    assert.deepEqual([size.width, size.height], [w, h], `episodes/002/${no}.jpg`);
   }
 });
 

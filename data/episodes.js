@@ -236,10 +236,10 @@
   // 완성된 원고만 여기에 등록합니다.
   // 형식) 회차번호: { date: "YYYY-MM-DD", images: ["01.jpg", "02.jpg"] }
   var MANUSCRIPTS = {
-    1: { images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
-    2: { date: "2026-10-17", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
-    3: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
-    4: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".jpg"; }) },
+    1: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
+    2: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
+    3: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
+    4: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
   };
 
   var data = { arcs: ARCS, titles: TITLES, manuscripts: MANUSCRIPTS };
