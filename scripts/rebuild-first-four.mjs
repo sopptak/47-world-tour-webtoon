@@ -70,7 +70,7 @@ function art(ep, i, line) {
   const child = kid ? '<g stroke="#292725" stroke-width="5"><path d="M80 760v-115h65v115" fill="#8b9db1"/><circle cx="112" cy="600" r="43" fill="#e8bd9e"/><path d="M70 590q10-65 85-34" fill="#252424"/><path d="M590 770v-108h65v108" fill="#c98e86"/><circle cx="622" cy="610" r="40" fill="#e8bd9e"/><path d="M580 595q12-55 82-25" fill="#252424"/></g>' : '';
   const bubbles = ['…','하…','음.','좋아.','잠깐.'];
   const emoji = /\?|막막|아…|놀|무섭|어렵|헉/.test(line) ? '?!' : (i % 7 === 0 ? '…' : '');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" role="img" aria-label="웹툰 장면"><rect width="720" height="900" fill="${paper}"/><rect x="0" y="0" width="720" height="510" fill="${bg}"/>${fx}<path d="M0 800 Q180 770 360 800 T720 790V900H0Z" fill="${accent}" opacity=".45"/>${child}${main}${side}<g font-family="sans-serif" font-weight="700" fill="#514b43"><text x="52" y="100" font-size="24">${esc(scene)}</text><text x="635" y="110" font-size="36">${emoji || bubbles[i%5]}</text></g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" role="img" aria-label="웹툰 장면"><rect width="720" height="900" fill="${paper}"/><rect x="0" y="0" width="720" height="510" fill="${bg}"/>${fx}<path d="M0 800 Q180 770 360 800 T720 790V900H0Z" fill="${accent}" opacity=".45"/>${child}${main}${side}<g font-family="sans-serif" font-weight="700" fill="#514b43"><text x="635" y="110" font-size="36">${emoji || bubbles[i%5]}</text></g></svg>`;
 }
 function script(ep) {
   const nextTitle = episodes[ep.no]?.title || (ep.no === 4 ? '서랍 속 오래된 지도' : undefined);
