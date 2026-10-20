@@ -119,3 +119,68 @@ test("HTML이 참조하는 로컬 파일이 모두 존재하고 외부 스크립
     .map((f) => fs.readFileSync(path.join(ROOT, f), "utf8")).join("\n");
   assert.doesNotMatch(sources, /googletagmanager|google-analytics|gtag\(|adsbygoogle|fbq\(|analytics/i);
 });
+
+// JPEG(SOFn)·WebP(VP8/VP8L/VP8X) 헤더에서 가로·세로 크기를 읽는다 (외부 라이브러리 없이)
+function imageSize(file) {
+  const b = fs.readFileSync(file);
+  if (b[0] === 0xff && b[1] === 0xd8) {
+    let i = 2;
+    while (i < b.length) {
+      if (b[i] !== 0xff) { i++; continue; }
+      const marker = b[i + 1];
+      const len = b.readUInt16BE(i + 2);
+      if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+        return { type: "jpeg", height: b.readUInt16BE(i + 5), width: b.readUInt16BE(i + 7) };
+      }
+      i += 2 + len;
+    }
+    return null;
+  }
+  if (b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
+    const chunk = b.toString("ascii", 12, 16);
+    if (chunk === "VP8X") return { type: "webp", width: 1 + b.readUIntLE(24, 3), height: 1 + b.readUIntLE(27, 3) };
+    if (chunk === "VP8 ") return { type: "webp", width: b.readUInt16LE(26) & 0x3fff, height: b.readUInt16LE(28) & 0x3fff };
+    if (chunk === "VP8L") {
+      const v = b.readUInt32LE(21);
+      return { type: "webp", width: (v & 0x3fff) + 1, height: ((v >> 14) & 0x3fff) + 1 };
+    }
+  }
+  return null;
+}
+
+test("등록된 원고 이미지는 실제 이미지이며 모바일에서 선명하게 볼 만한 해상도다", () => {
+  for (const ep of episodes) {
+    for (const src of ep.images) {
+      const size = imageSize(path.join(ROOT, src));
+      assert.ok(size, `이미지 헤더를 읽을 수 없음: ${src}`);
+      // 375px 화면(2배율)에서 크게 흐려지지 않도록 가로 640px 이상
+      assert.ok(size.width >= 640, `${src}: 가로 ${size.width}px`);
+      // 컷 단위로 나눈 이미지인지 확인 (지나치게 긴 통짜 이미지 방지)
+      assert.ok(size.height / size.width <= 2, `${src}: 세로로 너무 긴 이미지 ${size.width}x${size.height}`);
+    }
+  }
+});
+
+test("EP.002 13·14·19·20번 컷에서 옆 컷 조각을 잘라냈다", () => {
+  // 원래 720px 폭 이미지의 가장자리에 이웃 컷 일부가 섞여 있었음 (거터 위치에서 잘라냄)
+  const expected = { 13: [662, 600], 14: [655, 663], 19: [661, 920], 20: [714, 924] };
+  for (const [no, [w, h]] of Object.entries(expected)) {
+    const size = imageSize(path.join(ROOT, `episodes/002/${no}.jpg`));
+    assert.deepEqual([size.width, size.height], [w, h], `episodes/002/${no}.jpg`);
+  }
+});
+
+test("읽기 화면은 원고를 화면 너비에 맞추고 원본 비율을 유지한다", () => {
+  const css = fs.readFileSync(path.join(ROOT, "assets/css/style.css"), "utf8");
+  const viewer = css.match(/\.viewer\{([^}]*)\}/);
+  const img = css.match(/\.viewer img\{([^}]*)\}/);
+  assert.ok(viewer && img, ".viewer 스타일이 있어야 함");
+  assert.match(viewer[1], /width:100%/);
+  assert.match(viewer[1], /max-width:var\(--reader\)/);
+  assert.match(img[1], /width:100%/);
+  assert.match(img[1], /height:auto/);
+  // 고정 높이·object-fit으로 컷을 자르거나 늘리지 않는다
+  assert.doesNotMatch(img[1], /object-fit|(?:^|;)height:\d/);
+  const html = fs.readFileSync(path.join(ROOT, "episode.html"), "utf8");
+  assert.match(html, /<meta name="viewport" content="width=device-width, initial-scale=1">/);
+});
