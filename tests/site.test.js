@@ -72,8 +72,8 @@ test("EP.001~004는 같은 캐릭터 디자인의 20컷 SVG와 한국어 말풍�
     for (const src of ep.images) {
       const svg = fs.readFileSync(path.join(ROOT, src), "utf8");
       assert.match(svg, /viewBox="0 0 720 900"/);
-      assert.match(svg, /ellipse cx="350" cy="390" rx="112" ry="130"/);
-      assert.match(svg, /#181817/);
+      assert.match(svg, /ellipse cx="120" cy="126" rx="76" ry="89"/);
+      assert.match(svg, /role="img" aria-label="웹툰 장면 삽화"/);
       assert.doesNotMatch(svg, /컷\s*\d|panel\s*\d/i, `${src}: 그림에 컷 번호가 노출됨`);
     }
   }
@@ -246,8 +246,16 @@ test("EP.004 최종 대본은 20컷이고 다음 화로 연결한다", () => {
   assert.equal(episodes[3].published, true);
 });
 
-test("5~12화 대본: 제목 일치, 12~16컷, 컷마다 필수 항목, 아직 공개하지 않음", () => {
-  for (let no = 5; no <= 12; no++) {
+test("EP.005를 14컷으로 공개하고 EP.006~012 대본은 비공개로 유지한다", () => {
+  const ep5 = episodes[4];
+  const dialogue = require("../data/dialogues.js");
+  assert.equal(ep5.title, "서랍 속 오래된 지도");
+  assert.equal(ep5.published, true);
+  assert.equal(ep5.images.length, 14);
+  assert.equal(dialogue[5].length, 14);
+  assert.ok(dialogue[5][0].includes("주말에 안방 서랍장 정리하자"));
+  assert.ok(dialogue[5][13].includes("그 선을 그었던 사람은"));
+  for (let no = 6; no <= 12; no++) {
     const file = path.join(ROOT, `scripts/episodes/${core.pad3(no)}.md`);
     assert.ok(fs.existsSync(file), `없는 대본: ${file}`);
     const md = fs.readFileSync(file, "utf8").replace(/\r/g, "");

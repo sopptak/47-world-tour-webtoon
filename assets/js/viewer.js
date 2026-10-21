@@ -57,9 +57,10 @@
           openImage(src, img.alt);
         }
       });
-      if (episodeCaptions[ep.no]) {
+      var captionText = episodeCaptions[ep.no] && episodeCaptions[ep.no][i];
+      if (captionText && captionText.trim()) {
         var panel = el("figure", { "class": "panel" });
-        var caption = el("figcaption", { "class": "panel-caption is-top" }, episodeCaptions[ep.no][i]);
+        var caption = el("figcaption", { "class": "panel-caption is-top" }, captionText);
         panel.appendChild(img);
         panel.appendChild(caption);
         viewer.appendChild(panel);

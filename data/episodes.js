@@ -240,6 +240,7 @@
     2: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
     3: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
     4: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
+    5: { date: "2026-10-21", images: Array.from({ length: 14 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
   };
 
   var data = { arcs: ARCS, titles: TITLES, manuscripts: MANUSCRIPTS };
