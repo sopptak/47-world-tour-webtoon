@@ -21,8 +21,8 @@
 
 ## 원고 공개하기
 
-1. `episodes/001/01.jpg`처럼 이미지를 넣습니다.
-2. `data/episodes.js`의 `MANUSCRIPTS`에 `1: { date: "2026-11-01", images: ["01.jpg"] }`처럼 등록합니다.
+1. `episodes/001/01.webp`처럼 세로 컷 이미지를 넣습니다.
+2. `data/episodes.js`의 `MANUSCRIPTS`에 `1: { date: "2026-11-01", images: ["01.webp"] }`처럼 등록합니다.
 3. 등록하지 않은 회차는 자동으로 "준비 중"으로 표시됩니다.
 
 회차 제목과 순서는 200화 기준 자료이므로 임의로 바꾸지 않습니다.

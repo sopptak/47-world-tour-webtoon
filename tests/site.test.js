@@ -39,7 +39,7 @@ test("EP.002 정본 원고를 20컷으로 공개한다", () => {
   assert.equal(ep.title, "세계일주에는 돈이 얼마나 들까");
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.svg`));
+  assert.ok(ep.images.every((src, i) => src === `episodes/002/${String(i + 1).padStart(2, "0")}.webp`));
 });
 
 test("EP.003을 20컷 세로 배열과 한국어 대사로 공개한다", () => {
@@ -47,7 +47,7 @@ test("EP.003을 20컷 세로 배열과 한국어 대사로 공개한다", () => 
   assert.equal(ep.title, "그런데 내 통장에는…");
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/003/${String(i + 1).padStart(2, "0")}.svg`));
+  assert.ok(ep.images.every((src, i) => src === `episodes/003/${String(i + 1).padStart(2, "0")}.webp`));
   const dialogue = fs.readFileSync(path.join(ROOT, "data/dialogues.js"), "utf8");
   assert.match(dialogue, /고3 아들은 입시 일정이 있고/);
   assert.match(dialogue, /중1 딸도 자기 생활이 있지/);
@@ -58,25 +58,28 @@ test("EP.001을 기존 그림의 20컷 세로 배열로 공개한다", () => {
   const ep = episodes[0];
   assert.equal(ep.published, true);
   assert.equal(ep.images.length, 20);
-  assert.ok(ep.images.every((src, i) => src === `episodes/001/${String(i + 1).padStart(2, "0")}.svg`));
+  assert.ok(ep.images.every((src, i) => src === `episodes/001/${String(i + 1).padStart(2, "0")}.webp`));
 });
 
-test("EP.001~004는 같은 캐릭터 디자인의 20컷 SVG와 한국어 말풍선을 사용한다", () => {
+test("EP.001~004는 같은 캐릭터 기준의 20컷 WebP와 별도 한국어 대사를 사용한다", () => {
   const dialogues = require("../data/dialogues.js");
   for (let no = 1; no <= 4; no++) {
     const ep = episodes[no - 1];
     assert.equal(ep.images.length, 20, ep.code);
-    assert.ok(ep.images.every((src, i) => src === `episodes/${String(no).padStart(3, "0")}/${String(i + 1).padStart(2, "0")}.svg`));
+    assert.ok(ep.images.every((src, i) => src === `episodes/${String(no).padStart(3, "0")}/${String(i + 1).padStart(2, "0")}.webp`));
     assert.equal(dialogues[no].length, 20, `${ep.code} 말풍선 수`);
     assert.ok(dialogues[no].every((line) => line.trim()), `${ep.code} 빈 대사`);
     for (const src of ep.images) {
-      const svg = fs.readFileSync(path.join(ROOT, src), "utf8");
-      assert.match(svg, /viewBox="0 0 720 900"/);
-      assert.match(svg, /ellipse cx="120" cy="126" rx="76" ry="89"/);
-      assert.match(svg, /role="img" aria-label="웹툰 장면 삽화"/);
-      assert.doesNotMatch(svg, /컷\s*\d|panel\s*\d/i, `${src}: 그림에 컷 번호가 노출됨`);
+      const image = fs.readFileSync(path.join(ROOT, src));
+      assert.equal(image.toString("ascii", 0, 4), "RIFF", `${src}: WebP RIFF 헤더`);
+      assert.equal(image.toString("ascii", 8, 12), "WEBP", `${src}: WebP 형식`);
     }
   }
+  const ep5 = episodes[4];
+  assert.equal(ep5.images.length, 14, "EP.005 컷 수");
+  assert.equal(dialogues[5].length, 14, "EP.005 대사 연결 수");
+  assert.ok(ep5.images.every((src, i) => src === `episodes/005/${String(i + 1).padStart(2, "0")}.webp`));
+  assert.equal(dialogues[5][7], "", "정적 컷은 말풍선을 강제로 표시하지 않음");
   const page = fs.readFileSync(path.join(ROOT, "episode.html"), "utf8");
   assert.match(page, /data\/dialogues\.js/);
   assert.match(fs.readFileSync(path.join(ROOT, "assets/js/viewer.js"), "utf8"), /panel-caption is-top/);

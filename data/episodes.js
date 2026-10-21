@@ -5,7 +5,7 @@
  * 1. 이미지 파일을 episodes/<세 자리 회차 번호>/ 폴더에 넣습니다.
  *    예) episodes/001/01.jpg, episodes/001/02.jpg ...
  * 2. 아래 MANUSCRIPTS에 회차 번호와 파일 이름을 순서대로 적습니다.
- *    예) 1: { date: "2026-11-01", images: ["01.jpg", "02.jpg"] },
+ *    예) 1: { date: "2026-11-01", images: ["01.webp", "02.webp"] },
  * 3. images가 한 장 이상 등록된 회차만 "공개"로 표시됩니다.
  *    등록되지 않은 회차는 자동으로 "준비 중"으로 표시됩니다.
  *
@@ -234,13 +234,13 @@
   ];
 
   // 완성된 원고만 여기에 등록합니다.
-  // 형식) 회차번호: { date: "YYYY-MM-DD", images: ["01.jpg", "02.jpg"] }
+  // 형식) 회차번호: { date: "YYYY-MM-DD", images: ["01.webp", "02.webp"] }
   var MANUSCRIPTS = {
-    1: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
-    2: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
-    3: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
-    4: { date: "2026-10-20", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
-    5: { date: "2026-10-21", images: Array.from({ length: 14 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".svg"; }) },
+    1: { date: "2026-10-21", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".webp"; }) },
+    2: { date: "2026-10-21", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".webp"; }) },
+    3: { date: "2026-10-21", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".webp"; }) },
+    4: { date: "2026-10-21", images: Array.from({ length: 20 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".webp"; }) },
+    5: { date: "2026-10-21", images: Array.from({ length: 14 }, function (_, i) { return String(i + 1).padStart(2, "0") + ".webp"; }) },
   };
 
   var data = { arcs: ARCS, titles: TITLES, manuscripts: MANUSCRIPTS };
